@@ -12,24 +12,39 @@ Output: 1->1->2->3->4->4
 */
 
 class Solution {
+private:
+    void moveNode(ListNode** l1, ListNode** l2) {
+        if (l2 == nullptr) {
+            return;
+        }
+        ListNode* newNode = *l2;
+        *l2 = newNode->next;
+        
+        newNode->next = *l1;
+        *l1 = newNode;
+    }
 public:
     ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
-        ListNode* result = nullptr;
+        ListNode dummy = ListNode(0);
+        ListNode* tail = &dummy;
+        dummy.next = nullptr;
         
-        if (l1 == nullptr) {
-            return l2;
-        } else if (l2 == nullptr) {
-            return l1;
+        while (1) {
+            if (l1 == nullptr) {
+                tail->next = l2;
+                break;
+            } else if (l2 == nullptr) {
+                tail->next = l1;
+                break;
+            } else if (l1->val < l2->val) {
+                moveNode(&(tail->next), &(l1));
+            } else {
+                moveNode(&(tail->next), &(l2));
+            }
+            
+            tail = tail->next;
         }
         
-        if (l1->val < l2->val) {
-            result = l1;
-            result->next = mergeTwoLists(l1->next, l2);
-        } else {
-            result = l2;
-            result->next = mergeTwoLists(l1, l2->next);
-        }
-        
-        return result;
+        return dummy.next;
     }
 };
