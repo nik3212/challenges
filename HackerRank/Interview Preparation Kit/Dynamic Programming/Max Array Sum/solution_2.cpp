@@ -49,23 +49,21 @@ vector<string> split_string(string);
 int maxSubsetSum(vector<int> arr) {
     size_t size = arr.size();
 
-    if (size < 2) {
-        return *max_element(arr.begin(), arr.end());
+    int incl = arr[0];
+    int excl = 0;
+    
+    for (size_t i = 1; i < size; ++i) {
+        int tmp = max(incl, excl);
+
+        incl = excl + arr[i];
+        excl = tmp;
     }
 
-    std::vector<int> dp(size);
-
-    dp[0] = arr[0];
-    dp[1] = max(arr[0], arr[1]);
-
-    for (size_t i = 2; i < size; ++i) {
-        dp[i] = max(arr[i], max(arr[i] + dp[i - 2], dp[i - 1]));
-    }
-
-    return dp[size - 1];
+    return max(incl, excl);
 }
 
-int main() {
+int main()
+{
     ofstream fout(getenv("OUTPUT_PATH"));
 
     int n;
