@@ -1,23 +1,24 @@
 class Solution {
 public:
-    std::string helper(int num, std::string& str, int& i) {
+    std::string helper(std::string& str, int& i) {
         std::string tmp = "";
 
-        int current = 0;
+        int num = 0;
 
         for (; i < str.size(); ++i) {
             if (str[i] >= '0' && str[i] <= '9') {
-                current = current * 10 + str[i] - '0';
+                num = num * 10 + str[i] - '0';
             } else if (str[i] == '[') {
                 i += 1;
-                tmp += helper(current, str, i);
-                current = 0;
-            } else if (str[i] == ']') {
-                std::string result = "";
+                auto result = helper(str, i);
+
                 for (int i = 0; i < num; ++i) {
-                    result += tmp;
+                    tmp += result;
                 }
-                return result;
+
+                num = 0;
+            } else if (str[i] == ']') {
+                return tmp;
             } else {
                 tmp += str[i];
             }
@@ -28,6 +29,6 @@ public:
     
     string decodeString(string s) {
         int idx = 0;
-        return helper(0, s, idx);
+        return helper(s, idx);
     }
 };
