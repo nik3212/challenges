@@ -18,8 +18,6 @@ public:
         int curr = -1000000;
 
         for (int i = 0; i < n; ++i) {
-            std::cout << intervals[i][0] << " " << intervals[i][1] << std::endl;
-
             if (intervals[i][0] >= curr) {
                 curr = intervals[i][1];
             } else {
